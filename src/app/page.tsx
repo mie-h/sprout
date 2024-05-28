@@ -3,14 +3,11 @@
 import { useRef, useEffect } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { FBXLoader, GLTFLoader } from "three-stdlib";
-import { Mesh, AnimationMixer } from "three";
-import { useGLTF } from "@react-three/drei";
-
-import { useAnimations } from "@react-three/drei";
+import { GLTFLoader } from "three-stdlib";
+import { Mesh } from "three";
 
 function MeshComponent() {
-  const fileUrl = "/sheep_-_cloud_-_animated/scene.gltf";
+  const fileUrl = "/shiba/scene.gltf";
   const mesh = useRef<Mesh>(null!);
   const gltf = useLoader(GLTFLoader, fileUrl);
 
