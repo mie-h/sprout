@@ -2,16 +2,16 @@
 import Image from "next/image";
 import Robot from "@app/../../public/static/images/robot.svg";
 import React from "react";
+import { fetchUsers } from "./apicall"; // @app/apicall" fails
 
-function AiCompanion({ children }: { children: React.ReactNode }) {
+function AiCompanion({ messages }: { messages: string }) {
   return (
     <>
       <div className="flex flex-col justify-center items-center">
         <div className="p-4" />
         <div className="px-3.5 py-2 bg-primary rounded-3xl rounded-bl-none justify-start  items-center gap-3 inline-flex">
           <h5 className="text-gray-900 text-sm font-normal leading-snug">
-            Hello!
-            <br />I am your AI buddy.
+            {messages}
           </h5>
         </div>
         <div className="p-2" />
@@ -22,11 +22,16 @@ function AiCompanion({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ChatBox() {
+function ChatBox({ onSend }: { onSend: (message: string) => void }) {
   const [value, setValue] = React.useState("");
+
   const handleClick = async () => {
+    // Why async? func vs const
     console.log("clicked");
     console.log(value);
+    const message = await fetchUsers();
+    console.log("message: ", message);
+    onSend(message);
   };
   return (
     <>
@@ -64,14 +69,16 @@ export default function Home() {
       </div>
     );
   }
+  const [messages, setMessages] = React.useState("Hi, I am Ai Companion.");
+  const handleSendMessage = (newMessage: string) => {
+    setMessages(newMessage);
+  };
 
   return (
     <>
-      <AiCompanion>
-        Hello, <br />I am your AI buddy.
-      </AiCompanion>
+      <AiCompanion messages={messages} />
       <div className="flex flex-col overflow-scroll flex-grow">{tasks}</div>
-      <ChatBox />
+      <ChatBox onSend={handleSendMessage} />
     </>
   );
 }
