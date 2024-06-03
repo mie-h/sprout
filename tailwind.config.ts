@@ -17,7 +17,7 @@ const config: Config & { daisyui?: DaisyUIConfig } = {
     },
   },
   daisyui: {
-    themes: ["dark", "sunset", "emerald"],
+    themes: ["dark", "sunset", "emerald", "cupcake"],
   },
   plugins: [Daisy],
 };

@@ -12,6 +12,7 @@
     "@capacitor/android": "^6.0.0",
     "@capacitor/core": "^6.0.0",
     "@capacitor/ios": "^6.0.0",
+    "@headlessui/react": "^2.0.4",
     "@react-three/drei": "^9.105.6",
     "@react-three/fiber": "^8.16.6",
     "next": "14.2.3",
