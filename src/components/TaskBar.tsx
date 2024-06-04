@@ -1,5 +1,5 @@
-// src/components/TaskBar.tsx
 import React from "react";
+import { Button } from "@headlessui/react";
 
 interface TaskBarProps {
   taskName: string;
@@ -11,14 +11,14 @@ interface TaskBarProps {
 }
 
 const colorClassMap: { [key: string]: string } = {
-  purple: "bg-purple-600",
-  blue: "bg-blue-600",
-  cyan: "bg-cyan-600",
-  yellow: "bg-yellow-600",
-  indigo: "bg-indigo-600",
-  pink: "bg-pink-600",
-  green: "bg-green-600",
-  orange: "bg-orange-600",
+  purple: "bg-purple-300",
+  blue: "bg-blue-300",
+  cyan: "bg-cyan-300",
+  yellow: "bg-yellow-300",
+  indigo: "bg-indigo-300",
+  pink: "bg-pink-300",
+  green: "bg-green-300",
+  orange: "bg-orange-300",
 };
 
 const TaskBar: React.FC<TaskBarProps> = ({
@@ -40,12 +40,12 @@ const TaskBar: React.FC<TaskBarProps> = ({
         </div>
         <div className="flex items-center">
           <span className="text-sm mr-2">{quantity}</span>
-          <button
+          <Button
             onClick={onIncrement}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded"
+            className="inline-flex items-center justify-center w-8 h-8 rounded-full text-pink-500 border-pink-200 bg-white"
           >
             +
-          </button>
+          </Button>
         </div>
       </div>
       <div className="w-full bg-gray-200 rounded-full h-2">
