@@ -3,7 +3,7 @@ import { Button } from "@headlessui/react";
 
 interface TaskBarProps {
   taskName: string;
-  taskIcon: React.ReactNode; // New prop for task icon
+  taskIcon: React.ReactNode;
   quantity: string; // Current quantity out of total quantity
   color: string;
   completion: number; // percentage of completion

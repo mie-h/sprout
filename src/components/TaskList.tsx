@@ -1,8 +1,6 @@
-// src/components/TaskList.tsx
 import React, { useState, useEffect } from "react";
 import TaskBar from "./TaskBar";
 
-// Example icons (replace with actual icons or images)
 const taskIcons: { [key: string]: React.ReactNode } = {
   "Drink water": (
     <span role="img" aria-label="water">
@@ -29,7 +27,7 @@ const taskIcons: { [key: string]: React.ReactNode } = {
       🚶‍♂️
     </span>
   ),
-  // Add more icons as needed
+  // Add icons
 };
 
 interface Task {
@@ -38,7 +36,7 @@ interface Task {
   current: number;
   total: number;
   color: string;
-  completion: number; // percentage of completion
+  completion: number; // percentage
   days: number[]; // Array of days (0 for Sunday, 1 for Monday, etc.)
 }
 
@@ -88,7 +86,7 @@ const initialTasks: Task[] = [
     completion: 0,
     days: [1, 2, 3, 4, 5, 6],
   },
-  // Add more tasks as needed
+  // Add tasks
 ];
 
 interface TaskListProps {
