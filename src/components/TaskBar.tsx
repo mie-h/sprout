@@ -3,8 +3,11 @@ import React from "react";
 
 interface TaskBarProps {
   taskName: string;
+  taskIcon: React.ReactNode; // New prop for task icon
+  quantity: string; // Current quantity out of total quantity
   color: string;
   completion: number; // percentage of completion
+  onIncrement: () => void;
 }
 
 const colorClassMap: { [key: string]: string } = {
@@ -15,23 +18,39 @@ const colorClassMap: { [key: string]: string } = {
   indigo: "bg-indigo-600",
   pink: "bg-pink-600",
   green: "bg-green-600",
+  orange: "bg-orange-600",
 };
 
-const TaskBar: React.FC<TaskBarProps> = ({ taskName, color, completion }) => {
+const TaskBar: React.FC<TaskBarProps> = ({
+  taskName,
+  taskIcon,
+  quantity,
+  color,
+  completion,
+  onIncrement,
+}) => {
   const barClass = colorClassMap[color] || "bg-gray-600";
 
   return (
-    <div
-      className="flex items-center mb-4"
-      role="progressbar"
-      aria-valuenow={completion}
-      aria-valuemin={0}
-      aria-valuemax={100}
-    >
-      <span className="w-1/4 text-sm">{taskName}</span>
-      <div className="w-3/4 bg-gray-200 rounded-full h-6">
+    <div className="mb-4">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center">
+          <span className="mr-2">{taskIcon}</span>
+          <span className="text-sm">{taskName}</span>
+        </div>
+        <div className="flex items-center">
+          <span className="text-sm mr-2">{quantity}</span>
+          <button
+            onClick={onIncrement}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded"
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <div className="w-full bg-gray-200 rounded-full h-2">
         <div
-          className={`h-6 rounded-full ${barClass}`}
+          className={`h-2 rounded-full ${barClass}`}
           style={{ width: `${completion}%` }}
         ></div>
       </div>
