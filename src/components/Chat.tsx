@@ -1,4 +1,3 @@
-// src/components/Chat.tsx
 import React, { useState } from "react";
 import ChatBubble from "./ChatBubble";
 import { ChatBox } from "./ChatBox";

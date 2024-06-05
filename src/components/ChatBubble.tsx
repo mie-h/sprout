@@ -28,7 +28,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ text, isSender = false }) => {
       <div
         className={`p-3 rounded-lg max-w-xs w-auto ${bubbleClass}`}
         style={{
-          maxHeight: "5.5rem", // approximately 4 lines of text
+          maxHeight: "5.5rem",
           overflowY: "auto",
         }}
       >

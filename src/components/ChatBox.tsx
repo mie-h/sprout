@@ -1,4 +1,3 @@
-// src/components/ChatBox.tsx
 import React, { useState } from "react";
 
 export function ChatBox({ onSend }: { onSend: (message: string) => void }) {
