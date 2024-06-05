@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChatBox } from "@/components/ChatBox";
+import Chat from "@/components/Chat";
 import { TaskList } from "@/components/TaskList";
 import { AiCompanion } from "@/components/AiCompanion";
 
@@ -15,7 +15,7 @@ export default function Home() {
     <>
       <AiCompanion messages={messages} />
       <TaskList />
-      <ChatBox onSend={handleSendMessage} />
+      <Chat />
     </>
   );
 }
