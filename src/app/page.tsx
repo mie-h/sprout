@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { ChatBox } from "@/components/ChatBox";
-import TaskList from "@/components/TaskList";
+import WeeklyCalendar from "@/components/WeeklyCalendar";
 import { AiCompanion } from "@/components/AiCompanion";
-import TaskBar from "./../components/TaskBar";
 
 export default function Home() {
   const [messages, setMessages] = useState("Hi, I am Ai Companion.");
@@ -15,7 +14,7 @@ export default function Home() {
   return (
     <>
       <AiCompanion messages={messages} />
-      <TaskList />
+      <WeeklyCalendar />
       <ChatBox onSend={handleSendMessage} />
     </>
   );
