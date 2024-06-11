@@ -1,33 +1,27 @@
 "use client";
-import {
-  CloseButton,
-  Description,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
-import { useState } from "react";
 
-export function TaskList() {
-  const tasks = [
-    <div key="1" className="w-50 p-4 border-4 box-border">
-      task1
-    </div>,
-    <div key="2" className="w-50 p-2" />,
-  ];
-  for (let i = 2; i < 10; i++) {
-    tasks.push(
-      <div key={2 * i + 1} className="w-50 p-4 border-4 box-border">
-        task{i}
-      </div>,
-      <div key={2 * i} className="w-50 p-2" />
+export function TaskList({
+  tasks,
+}: {
+  tasks: { id: number; title: string }[];
+}) {
+  const taskDivs = tasks.flatMap(({ title }, i) => {
+    const result =
+      i === 0 ? [] : [<div key={2 * i - 1} className="w-50 p-2" />];
+
+    result.push(
+      <div key={2 * i} className="w-50 p-4 border-4 box-border">
+        {title}
+      </div>
     );
-  }
+
+    return result;
+  });
 
   return (
     <>
       <div className="flex flex-col overflow-scroll flex-grow">
-        {tasks}
+        {taskDivs}
         <button
           className="w-50 p-4 border-4 box-border text-left"
           onClick={() =>

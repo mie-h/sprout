@@ -1,31 +1,16 @@
-import { GetServerSideProps } from "next";
-
-interface NewRouteData {
-  message: string;
-}
-
-interface NewRoutePageProps {
-  data: NewRouteData;
-}
-
-export const getServerSideProps: GetServerSideProps<NewRoutePageProps> = async (
-  context
-) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api`);
-  const data: NewRouteData = await res.json();
-
-  return {
-    props: { data },
-  };
+export const getServerSideProps = async () => {
+  const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api`;
+  console.log(URL);
+  const res = await fetch("/api");
+  console.log(res);
 };
 
-const NewRoutePage: React.FC<NewRoutePageProps> = ({ data }) => {
+export function Login() {
   return (
     <div>
-      <h1>New Route Data</h1>
-      <p>{data.message}</p>
+      <button className="" onClick={() => getServerSideProps()}>
+        login
+      </button>
     </div>
   );
-};
-
-export default NewRoutePage;
+}

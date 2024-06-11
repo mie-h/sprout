@@ -1,7 +1,9 @@
 import json
+from http import HTTPStatus
+from typing import Annotated
 
 from authlib.integrations.starlette_client import OAuth, OAuthError
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, HTTPException
 from loguru import logger
 
 # from starlette.config import Config
@@ -64,6 +66,19 @@ async def auth(request: Request):
 async def logout(request: Request):
     request.session.pop("user", None)
     return RedirectResponse(url="/api")
+
+
+def get_user_id(request: Request):
+    user = request.session.get("user")
+    if not user:
+        raise HTTPException(HTTPStatus.UNAUTHORIZED.value, "User not logged in")
+    return str(user.get("sub"))
+
+
+@app.get("/api/tasks")
+async def get_tasks(user_id: Annotated[str, Depends(get_user_id)]):
+    del user_id
+    return [{"id": 1, "title": "Buy Milk"}, {"id": 2, "title": "Buy Bread"}]
 
 
 if __name__ == "__main__":
