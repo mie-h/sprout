@@ -20,7 +20,7 @@ export default function Home() {
       const response = await fetch("/api/tasks");
       console.log(response);
       if (response.status === 401) {
-        return router.push("/api/login");
+        return router.push("/login");
       }
 
       setTasks(await response.json());

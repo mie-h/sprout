@@ -59,7 +59,7 @@ async def auth(request: Request):
     if user:
         request.session["user"] = dict(user)
     print(f"user: {user}")
-    return RedirectResponse(url="/api")
+    return RedirectResponse(url="/")
 
 
 @app.get("/api/logout")
