@@ -12,6 +12,11 @@ const nextConfig = {
     ];
   },
   output: "export",
+  images: {
+    // Disable Image Optimization when using export mode
+    unoptimized: true,
+  },
 };
 
 export default nextConfig;
+
