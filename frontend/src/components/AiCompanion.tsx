@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Robot from "@/images/robot.svg";
+import Robot from "@images/robot.svg";
 
 export function AiCompanion({ messages }: { messages: string }) {
   return (
