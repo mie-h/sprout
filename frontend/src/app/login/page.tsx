@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Robot from "@/images/robot.svg";
-import GoogleLogo from "@/images/google-logo.png";
+import Robot from "@images/robot.svg";
+import GoogleLogo from "@icons/google-logo.png";
 import React from "react";
 import { Button } from "@headlessui/react";
 

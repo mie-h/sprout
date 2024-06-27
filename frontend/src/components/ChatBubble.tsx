@@ -1,5 +1,6 @@
 import React from "react";
-import Robot from "@/images/robot.svg";
+import Robot from "@images/robot.svg";
+import Image from "next/image";
 
 interface ChatBubbleProps {
   text: string;
@@ -23,7 +24,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ text, isSender = false }) => {
   return (
     <div className={containerClass}>
       {!isSender && (
-        <img src={Robot} alt="avatar" className="w-8 h-8 rounded-full" />
+        <Image src={Robot} alt="avatar" className="w-8 h-8 rounded-full" />
       )}
       <div
         className={`p-3 rounded-lg max-w-xs w-auto ${bubbleClass}`}
