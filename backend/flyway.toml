@@ -1,0 +1,28 @@
+databaseType = "PostgreSql"
+id = "d00bca34-5173-4c49-a288-b60cb7ed6e7f"
+name = "notsureyet"
+
+[flyway]
+locations = [ "filesystem:migrations" ]
+mixed = true
+outOfOrder = true
+validateMigrationNaming = true
+
+  [flyway.check]
+  majorTolerance = 0
+
+[flywayDesktop]
+developmentEnvironment = "development"
+schemaModel = "schema-model"
+shadowEnvironment = "shadow"
+
+[redgateCompare]
+filterFile = "filter.rgf"
+
+[redgateCompare.postgresql.options.ignores]
+ignoreNewlinesInTextObjects = "off"
+
+[environments.gcp]
+url = "jdbc:postgresql://34.31.63.157:5432/guestbook"
+schemas = [ "public" ]
+displayName = "Google Cloud Database"

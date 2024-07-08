@@ -1,0 +1,1 @@
+CREATE TABLE entries (id int GENERATED ALWAYS AS IDENTITY, content text NOT NULL);
