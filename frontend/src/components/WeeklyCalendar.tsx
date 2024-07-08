@@ -21,7 +21,7 @@ const WeeklyCalendar: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-6 bg-white dark:bg-gray-800 rounded-lg">
+    <div className="p-6 bg-white dark:bg-gray-800 rounded-lg min-h-96 h-full w-full max-w-screen-lg overflow-y-auto">
       <div className="flex justify-between mb-4">
         {daysOfWeek.map((day, index) => (
           <Button

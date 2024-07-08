@@ -11,7 +11,7 @@ export function ChatBox({ onSend }: { onSend: (message: string) => void }) {
   };
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center mt-8">
       <input
         type="text"
         placeholder="Type here"

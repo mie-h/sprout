@@ -1,6 +1,4 @@
 import React from "react";
-import Robot from "@images/robot.svg";
-import Image from "next/image";
 
 interface ChatBubbleProps {
   text: string;
@@ -9,8 +7,8 @@ interface ChatBubbleProps {
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({ text, isSender = false }) => {
   const bubbleClass = isSender
-    ? "bg-primary text-black self-end"
-    : "bg-indigo-200 text-black self-start";
+    ? "bg-primary text-black self-end rounded-bl-none"
+    : "bg-indigo-200 text-black self-start rounded-br-none";
 
   const containerClass = isSender
     ? "flex justify-end items-start space-x-2"
@@ -22,18 +20,17 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ text, isSender = false }) => {
   });
 
   return (
-    <div className={containerClass}>
-      {!isSender && (
-        <Image src={Robot} alt="avatar" className="w-8 h-8 rounded-full" />
-      )}
+    <div className={`overflow-y-auto mb-4 mt-10 ${containerClass}`}>
       <div
-        className={`p-3 rounded-lg max-w-xs w-auto ${bubbleClass}`}
+        className={`px-3.5 py-2 rounded-3xl justify-start items-center gap-3 inline-flex ${bubbleClass}`}
         style={{
           maxHeight: "5.5rem",
           overflowY: "auto",
         }}
       >
-        {text}
+        <h5 className="text-gray-900 text-sm font-normal leading-snug">
+          {text}
+        </h5>
         <div className="text-xs text-right mt-1 opacity-75">{timestamp}</div>
       </div>
     </div>
