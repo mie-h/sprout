@@ -6,6 +6,7 @@ import ChatBubble from "@/components/ChatBubble";
 import { ChatBox } from "@/components/ChatBox";
 import WeeklyCalendar from "@/components/WeeklyCalendar";
 import { AiCompanion } from "@/components/AiCompanion";
+import { RiLogoutCircleRLine } from "react-icons/ri";
 
 const initialMessages = [
   { text: "Hi there! How are you?", isSender: false },
@@ -41,9 +42,16 @@ export default function Home() {
     })();
   }, []);
 
+  const handleLogOut = () => {
+    router.push("/api/logout");
+  };
+
   return (
     <div className="h-screen flex flex-col justify-center items-center p-4 space-y-4">
       <div className="flex-1 flex flex-col justify-center items-center">
+        <button className="btn self-end p-2" onClick={handleLogOut}>
+          <RiLogoutCircleRLine />
+        </button>
         {lastMessage && (
           <ChatBubble text={lastMessage.text} isSender={lastMessage.isSender} />
         )}
