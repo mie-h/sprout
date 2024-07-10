@@ -5,18 +5,19 @@ from typing import Annotated
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from fastapi import Depends, FastAPI, HTTPException
 from loguru import logger
+import openai
 
 # from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
-from starlette.responses import HTMLResponse, RedirectResponse
+from starlette.responses import HTMLResponse, RedirectResponse, JSONResponse
 
-from .config import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+from .config import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, OPENAI_API_KEY
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="!secret")
-
 oauth = OAuth()
+
 
 CONF_URL = "https://accounts.google.com/.well-known/openid-configuration"
 oauth.register(
@@ -80,8 +81,28 @@ async def get_tasks(user_id: Annotated[str, Depends(get_user_id)]):
     del user_id
     return [{"id": 1, "title": "Buy Milk"}, {"id": 2, "title": "Buy Bread"}]
 
+# Load your API key from an environment variable or secret management service
+openai.api_key = OPENAI_API_KEY
+
+@app.post("/api/chat")
+async def chat(request: Request):
+    data = await request.json()
+    user_message = data.get("message")
+
+    if not user_message:
+        return JSONResponse(status_code=HTTPStatus.BAD_REQUEST, content={"error": "No message provided"})
+
+    response = openai.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": user_message}
+        ]
+    )
+
+    chat_message = response.choices[0].message.content
+    return JSONResponse(content={"response": chat_message})
+
 
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="127.0.0.1", port=8000)
