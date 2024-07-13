@@ -4,6 +4,8 @@ from typing import Annotated
 
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 from loguru import logger
 import openai
 
@@ -18,6 +20,14 @@ app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="!secret")
 oauth = OAuth()
 
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Adjust this to your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 CONF_URL = "https://accounts.google.com/.well-known/openid-configuration"
 oauth.register(
@@ -92,15 +102,22 @@ async def chat(request: Request):
     if not user_message:
         return JSONResponse(status_code=HTTPStatus.BAD_REQUEST, content={"error": "No message provided"})
 
+    # Prepend instruction to prompt for a brief response
+    prompt = f"Please respond in a brief phrase: {user_message}"
+
     response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "user", "content": user_message}
-        ]
+                {"role": "user", "content": prompt}
+            ],
+        max_tokens=25,  # Limit the number of tokens in the response
+        stop=["\n"],     # Optionally, specify a stop sequence
     )
 
     chat_message = response.choices[0].message.content
+    print(chat_message)
     return JSONResponse(content={"response": chat_message})
+    
 
 
 if __name__ == "__main__":

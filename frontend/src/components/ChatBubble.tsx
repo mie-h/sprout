@@ -5,7 +5,7 @@ interface ChatBubbleProps {
   isSender?: boolean;
 }
 
-const ChatBubble: React.FC<ChatBubbleProps> = ({ text, isSender = false }) => {
+const ChatBubble: React.FC<ChatBubbleProps> = ({ text, isSender }) => {
   const bubbleClass = isSender
     ? "bg-primary text-black self-end rounded-bl-none"
     : "bg-indigo-200 text-black self-start rounded-br-none";
@@ -20,7 +20,9 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ text, isSender = false }) => {
   });
 
   return (
-    <div className={`overflow-y-auto mb-4 mt-10 ${containerClass}`}>
+    <div
+      className={`maxHeight-5.5rem overflow-y-auto mb-4 mt-10 ${containerClass}`}
+    >
       <div
         className={`px-3.5 py-2 rounded-3xl justify-start items-center gap-3 inline-flex ${bubbleClass}`}
         style={{
