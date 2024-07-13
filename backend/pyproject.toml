@@ -25,3 +25,14 @@ build-backend = "pdm.backend"
 
 [tool.pdm]
 distribution = true
+
+
+[tool.pytest.ini_options]
+testpaths = [
+    "src/backend"
+]
+python_files = [
+    "tests.py",
+    "test_*.py",
+    "*_test.py",
+]
