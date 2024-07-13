@@ -1,0 +1,36 @@
+name: backend testing
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    # FIXME: Add PostgreSQL as a dependency to test database connection
+    # services:
+    #   postgres:
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install flake8
+        run: pipx install flake8
+
+      - name: Lint with flake8
+        run: flake8 . --max-line-length=120
+        working-directory: backend
+
+      - name: Setup PDM
+        uses: pdm-project/setup-pdm@v4
+        with:
+          python-version-file: backend/pyproject.toml
+          cache: true
+          cache-dependency-path: backend/pdm.lock
+
+      - name: Install Dependencies
+        run: pdm install
+        working-directory: backend
+
+      - name: Run Tests
+        run: pdm run pytest
+        working-directory: backend
