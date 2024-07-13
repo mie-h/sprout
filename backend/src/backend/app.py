@@ -11,7 +11,10 @@ from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
 
-from .config import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+from .config import (  # TODO: get credentials from command line
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+)
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="!secret")
@@ -82,6 +85,9 @@ async def get_tasks(user_id: Annotated[str, Depends(get_user_id)]):
 
 
 if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="127.0.0.1", port=8000)
     import uvicorn
 
     uvicorn.run(app, host="127.0.0.1", port=8000)
