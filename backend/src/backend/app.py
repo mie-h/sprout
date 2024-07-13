@@ -14,6 +14,7 @@ from authlib.integrations.starlette_client import (  # type: ignore [reportMissi
 from fastapi import Depends, FastAPI, HTTPException
 from loguru import logger
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.requests import Request  # noqa: TCH002
 from starlette.responses import HTMLResponse, RedirectResponse
 
 _GOOGLE_CLIENT_ID = ""
@@ -22,7 +23,6 @@ _GOOGLE_CLIENT_SECRET = ""
 if TYPE_CHECKING:
     from asyncpg import Record
     from asyncpg.pool import Pool
-    from starlette.requests import Request
 
 
 async def main():
