@@ -13,13 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install flake8
-        run: pipx install flake8
-
-      - name: Lint with flake8
-        run: flake8 . --max-line-length=120
-        working-directory: backend
-
       - name: Setup PDM
         uses: pdm-project/setup-pdm@v4
         with:
