@@ -1,0 +1,37 @@
+services:
+  db:
+    container_name: db
+    restart: always
+    image: postgres:16-alpine
+    shm_size: 256mb
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
+      interval: 5s
+      retries: 10
+      timeout: 5s
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  api:
+    container_name: api
+    build: .
+    restart: always
+    volumes:
+      - .:/app
+    # TODO: Add .env.sample with GOOGLE_CLIENT_ID and others
+    # env_file:
+    #   - .env
+    ports:
+      - 8000:8000
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:
