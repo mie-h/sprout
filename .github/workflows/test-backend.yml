@@ -1,4 +1,4 @@
-name: backend testing
+name: FastAPI Testing
 
 on: push
 
