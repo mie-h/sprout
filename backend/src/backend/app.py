@@ -70,7 +70,7 @@ async def auth(request: Request):
 @app.get("/api/logout")
 async def logout(request: Request):
     request.session.pop("user", None)
-    return RedirectResponse(url="/api")
+    return RedirectResponse(url="/login")
 
 
 def get_user_id(request: Request):
