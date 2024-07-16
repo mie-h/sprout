@@ -1,9 +1,9 @@
-name: backend testing
+name: Python Linting with Ruff
 
 on: push
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
