@@ -24,3 +24,22 @@ api  | INFO:     Waiting for application startup.
 api  | INFO:     Application startup complete.
 api  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
+
+## Run tests
+
+While running the containers
+
+```
+$ docker exec -it api pytest
+================================ test session starts ================================
+platform linux -- Python 3.12.4, pytest-8.2.2, pluggy-1.5.0
+rootdir: /app
+configfile: pyproject.toml
+testpaths: src/backend
+plugins: anyio-4.4.0
+collected 3 items
+
+src/backend/tests.py ...                                                      [100%]
+
+================================= 3 passed in 0.31s =================================
+```
