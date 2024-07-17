@@ -113,6 +113,20 @@ async def get_tasks(user_id: Annotated[str, Depends(get_user_id)]):
     return [{"id": 1, "title": "Buy Milk"}, {"id": 2, "title": "Buy Bread"}]
 
 
+# just to demonstrate the db connection
+# TODO: Remove this endpoint once we have the actual endpoints
+# ref: https://magicstack.github.io/asyncpg/current/api/index.html#asyncpg.connection.Connection
+@app.get("/test-db")
+async def test_db(conn=Depends(get_db_connection)):
+    assert not conn.is_closed()
+    try:
+        result = await conn.fetch("SELECT * FROM database_that_does_not_exist")
+    except asyncpg.exceptions.UndefinedTableError as err:
+        result = str(err)
+    assert result == 'relation "database_that_does_not_exist" does not exist'
+    return {"result": result}
+
+
 if __name__ == "__main__":
     import uvicorn
 
