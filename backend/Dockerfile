@@ -9,7 +9,7 @@ RUN pip install -U pip
 
 RUN pip install pdm
 COPY pyproject.toml pdm.lock ./
-RUN pdm export > requirements.txt
+RUN pdm export --dev > requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/backend ./src/backend
