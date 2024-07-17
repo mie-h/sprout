@@ -1,9 +1,29 @@
+import asyncpg
+import pytest
 from fastapi.testclient import TestClient
 
-from backend.app import app
+from backend.app import app, DATABASE_URL
 
 
 client = TestClient(app)
+
+
+@pytest.mark.asyncio
+async def test_db_connection():
+    # create a connection pool
+    app.state.pool = await asyncpg.create_pool(DATABASE_URL)
+
+    async with app.state.pool.acquire() as conn:
+        assert not conn.is_closed()
+        with pytest.raises(asyncpg.exceptions.UndefinedTableError) as exc_info:
+            await conn.fetch("SELECT * FROM database_that_does_not_exist")
+        assert (
+            exc_info.value.args[0]
+            == 'relation "database_that_does_not_exist" does not exist'
+        )
+
+    # close the connection pool
+    await app.state.pool.close()
 
 
 def test_login():
