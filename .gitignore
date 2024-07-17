@@ -2,3 +2,7 @@ memo.txt
 
 .firebase/
 .pytest_cache
+
+# vim
+*swo
+*swp
