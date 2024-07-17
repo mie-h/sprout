@@ -18,4 +18,4 @@ COPY src/backend ./src/backend
 # COPY tests /app/tests
 
 EXPOSE 8000
-CMD ["uvicorn", "src.backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.backend.app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
