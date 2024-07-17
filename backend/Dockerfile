@@ -6,7 +6,10 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 RUN pip install -U pip
-COPY requirements.txt .
+
+RUN pip install pdm
+COPY pyproject.toml pdm.lock ./
+RUN pdm export > requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/backend ./src/backend
