@@ -1,3 +1,4 @@
+import os
 import json
 from http import HTTPStatus
 from typing import Annotated
@@ -11,12 +12,10 @@ from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
 
-# from .config import (  # TODO: get credentials from command line
-#     GOOGLE_CLIENT_ID,
-#     GOOGLE_CLIENT_SECRET,
-# )
-GOOGLE_CLIENT_ID = ""
-GOOGLE_CLIENT_SECRET = ""
+
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="!secret")
