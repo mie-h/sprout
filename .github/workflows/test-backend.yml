@@ -6,9 +6,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    # FIXME: Add PostgreSQL as a dependency to test database connection
-    # services:
-    #   postgres:
+    services:
+      db:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
@@ -21,9 +32,12 @@ jobs:
           cache-dependency-path: backend/pdm.lock
 
       - name: Install Dependencies
-        run: pdm install
+        run: pdm install --dev
         working-directory: backend
 
       - name: Run Tests
+        env:
+          # docker is not used in GitHub Actions with a simple setup
+          POSTGRES_HOSTNAME: localhost
         run: pdm run pytest
         working-directory: backend
