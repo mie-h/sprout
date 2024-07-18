@@ -9,7 +9,7 @@ RUN pip install -U pip
 
 RUN pip install pdm
 COPY pyproject.toml pdm.lock ./
-RUN pdm export > requirements.txt
+RUN pdm export --dev > requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/backend ./src/backend
@@ -18,4 +18,4 @@ COPY src/backend ./src/backend
 # COPY tests /app/tests
 
 EXPOSE 8000
-CMD ["uvicorn", "src.backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.backend.app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
