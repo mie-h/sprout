@@ -1,7 +1,8 @@
 import os
 import json
+from contextlib import asynccontextmanager
 from http import HTTPStatus
-from typing import Annotated
+from typing import Annotated, Optional
 
 import asyncpg
 from authlib.integrations.starlette_client import OAuth, OAuthError
@@ -29,7 +30,18 @@ DATABASE_URL = (
 )
 
 
-app = FastAPI()
+db_pool: Optional[asyncpg.pool.Pool] = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global db_pool
+    db_pool = await asyncpg.create_pool(DATABASE_URL)
+    yield
+    await db_pool.close()
+
+
+app = FastAPI(lifespan=lifespan)
 app.add_middleware(SessionMiddleware, secret_key="!secret")
 
 oauth = OAuth()
@@ -44,19 +56,9 @@ oauth.register(
 )
 
 
-@app.on_event("startup")
-async def startup():
-    app.state.pool = await asyncpg.create_pool(DATABASE_URL)
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    await app.state.pool.close()
-
-
 # Dependency to get the database connection
 async def get_db_connection():
-    async with app.state.pool.acquire() as connection:
+    async with db_pool.acquire() as connection:
         yield connection
 
 
