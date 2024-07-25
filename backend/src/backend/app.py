@@ -7,18 +7,22 @@ from typing import Annotated, Optional
 import asyncpg
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
+
+import openai
 
 # from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
-from starlette.responses import HTMLResponse, RedirectResponse
+from starlette.responses import HTMLResponse, RedirectResponse, JSONResponse
 
 
 # TODO: Create a dedicated configuration file to load the environment variables
 #       and import them here
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 # default values are provided for local development
 DATABASE_URL = (
     "postgresql://"
@@ -45,6 +49,15 @@ app = FastAPI(lifespan=lifespan)
 app.add_middleware(SessionMiddleware, secret_key="!secret")
 
 oauth = OAuth()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Adjust this to your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 CONF_URL = "https://accounts.google.com/.well-known/openid-configuration"
 oauth.register(
@@ -113,6 +126,34 @@ def get_user_id(request: Request):
 async def get_tasks(user_id: Annotated[str, Depends(get_user_id)]):
     del user_id
     return [{"id": 1, "title": "Buy Milk"}, {"id": 2, "title": "Buy Bread"}]
+
+
+# Open AI chat
+openai.api_key = OPENAI_API_KEY 
+
+@app.post("/api/chat")
+async def chat(request: Request):
+    data = await request.json()
+    user_message = data.get("message")
+
+    if not user_message:
+        return JSONResponse(status_code=HTTPStatus.BAD_REQUEST, content={"error": "No message provided"})
+
+    # Prepend instruction to prompt for a brief response
+    prompt = f"Please respond in a brief phrase: {user_message}"
+
+    response = openai.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+                {"role": "user", "content": prompt}
+            ],
+        max_tokens=25,  # Limit the number of tokens in the response
+        stop=["\n"],     # Optionally, specify a stop sequence
+    )
+
+    chat_message = response.choices[0].message.content
+    print(chat_message)
+    return JSONResponse(content={"response": chat_message})
 
 
 # just to demonstrate the db connection
