@@ -65,6 +65,7 @@ async def get_db_connection():
 @app.get("/api")
 async def homepage(request: Request):
     user = request.session.get("user")
+    print("hello")
     if user:
         data = json.dumps(user)
         html = f"<pre>{data}</pre>" '<a href="/api/logout">logout</a>'
