@@ -9,7 +9,6 @@ import asyncpg
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse
 from fastapi.exceptions import RequestValidationError
 
 from loguru import logger
