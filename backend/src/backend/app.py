@@ -3,10 +3,11 @@ import json
 from contextlib import asynccontextmanager
 from http import HTTPStatus
 from typing import Annotated, Optional
+from pydantic import BaseModel
 
 import asyncpg
 from authlib.integrations.starlette_client import OAuth, OAuthError
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
@@ -127,17 +128,22 @@ async def get_tasks(user_id: Annotated[str, Depends(get_user_id)]):
     del user_id
     return [{"id": 1, "title": "Buy Milk"}, {"id": 2, "title": "Buy Bread"}]
 
-
 # Open AI chat
 openai.api_key = OPENAI_API_KEY 
 
-@app.post("/api/chat")
-async def chat(request: Request):
-    data = await request.json()
-    user_message = data.get("message")
+# Pydantic models for request and response
+class ChatRequest(BaseModel):
+    message: str
+
+class ChatResponse(BaseModel):
+    response: str
+
+@app.post("/api/chat", response_model=ChatResponse, status_code=status.HTTP_200_OK)
+async def chat(chat_request: ChatRequest):
+    user_message = chat_request.message
 
     if not user_message:
-        return JSONResponse(status_code=HTTPStatus.BAD_REQUEST, content={"error": "No message provided"})
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No message provided")
 
     # Prepend instruction to prompt for a brief response
     prompt = f"Please respond in a brief phrase: {user_message}"
@@ -153,7 +159,7 @@ async def chat(request: Request):
 
     chat_message = response.choices[0].message.content
     print(chat_message)
-    return JSONResponse(content={"response": chat_message})
+    return ChatResponse(response=chat_message)
 
 
 # just to demonstrate the db connection
