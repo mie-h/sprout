@@ -9,6 +9,9 @@ import asyncpg
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
+from fastapi.exceptions import RequestValidationError
+
 from loguru import logger
 
 import openai
@@ -16,7 +19,7 @@ import openai
 # from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
-from starlette.responses import HTMLResponse, RedirectResponse
+from starlette.responses import HTMLResponse, RedirectResponse, JSONResponse
 
 
 # TODO: Create a dedicated configuration file to load the environment variables
@@ -128,15 +131,19 @@ async def get_tasks(user_id: Annotated[str, Depends(get_user_id)]):
     del user_id
     return [{"id": 1, "title": "Buy Milk"}, {"id": 2, "title": "Buy Bread"}]
 
+
 # Open AI chat
 openai.api_key = OPENAI_API_KEY 
+
 
 # Pydantic models for request and response
 class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1)
 
+
 class ChatResponse(BaseModel):
     response: str
+
 
 @app.post("/api/chat", response_model=ChatResponse, status_code=status.HTTP_200_OK)
 async def chat(chat_request: ChatRequest):
@@ -157,6 +164,15 @@ async def chat(chat_request: ChatRequest):
     chat_message = response.choices[0].message.content
     print(chat_message)
     return ChatResponse(response=chat_message)
+
+
+# override the default status for malformed request payload 422 -> 400
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content={"error_message": "Malformed request"}
+    )
 
 
 # just to demonstrate the db connection
