@@ -16,7 +16,7 @@ import openai
 # from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
-from starlette.responses import HTMLResponse, RedirectResponse, JSONResponse
+from starlette.responses import HTMLResponse, RedirectResponse
 
 
 # TODO: Create a dedicated configuration file to load the environment variables
