@@ -3,7 +3,7 @@ import json
 from contextlib import asynccontextmanager
 from http import HTTPStatus
 from typing import Annotated, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 import asyncpg
 from authlib.integrations.starlette_client import OAuth, OAuthError
@@ -133,7 +133,7 @@ openai.api_key = OPENAI_API_KEY
 
 # Pydantic models for request and response
 class ChatRequest(BaseModel):
-    message: str
+    message: str = Field(..., min_length=1)
 
 class ChatResponse(BaseModel):
     response: str
@@ -141,9 +141,6 @@ class ChatResponse(BaseModel):
 @app.post("/api/chat", response_model=ChatResponse, status_code=status.HTTP_200_OK)
 async def chat(chat_request: ChatRequest):
     user_message = chat_request.message
-
-    if not user_message:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No message provided")
 
     # Prepend instruction to prompt for a brief response
     prompt = f"Please respond in a brief phrase: {user_message}"
