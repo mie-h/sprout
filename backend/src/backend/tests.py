@@ -41,12 +41,10 @@ def test_list_tasks_unauthorized_user():
     assert response.status_code == 401
     assert response.json() == {"detail": "User not logged in"}
 
-# OpenAI
+# Chat enpoint
 
 def test_chat_endpoint_malformed_request():
     response = client.post("/api/chat", json={"test": "test"})
-    assert response.status_code == 422
-    assert "detail" in response.json()
-
-
+    assert response.status_code == 400
+    assert response.json() == {"error_message": "Malformed request"}
 
