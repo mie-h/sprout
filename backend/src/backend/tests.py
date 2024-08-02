@@ -41,10 +41,21 @@ def test_list_tasks_unauthorized_user():
     assert response.status_code == 401
     assert response.json() == {"detail": "User not logged in"}
 
-# Chat enpoint
 
+# Chat enpoint
+# Test for malformed request
 def test_chat_endpoint_malformed_request():
     response = client.post("/api/chat", json={"test": "test"})
     assert response.status_code == 400
-    assert response.json() == {"error_message": "Malformed request"}
+    assert "type" in response.text
+    assert "loc" in response.text
+    assert "msg" in response.text
 
+
+# Test for empty `message` field
+def test_chat_endpoint_empty_message():
+    response = client.post("/api/chat", json={"message": ""})
+    assert response.status_code == 400
+    assert "type" in response.text
+    assert "loc" in response.text
+    assert "msg" in response.text
