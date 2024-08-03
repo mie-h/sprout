@@ -71,14 +71,15 @@ def test_chat_endpoint_success(mocker):
     This test demonstrates how to mock the OpenAI API call within the chat
     endpoint to return a known response.
     """
+    mocker.patch("openai.api_key", return_value="test")
     openai_mock_response = mocker.MagicMock()
     openai_mock_response.choices = [mocker.MagicMock()]
     openai_mock_response.choices[0].message.content = "What's up?"
-
     mocker.patch(
         "openai.chat.completions.create",
         return_value=openai_mock_response,
     )
+
     response = client.post("/api/chat", json={"message": "Hello, World!"})
     assert response.status_code == 200
     assert response.json() == {"response": "What's up?"}
