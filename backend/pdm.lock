@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.2"
-content_hash = "sha256:a387b317b0702aba69b6c4178784cf388d7b5329d9611aeced59e5b9afce8350"
+content_hash = "sha256:caa9b973878626aebce1cd6652d438d4bc56e84de1ec053dcf17dc5248b48764"
 
 [[package]]
 name = "annotated-types"
@@ -584,6 +584,20 @@ dependencies = [
 files = [
     {file = "pytest_asyncio-0.23.8-py3-none-any.whl", hash = "sha256:50265d892689a5faefb84df80819d1ecef566eb3549cf915dfb33569359d1ce2"},
     {file = "pytest_asyncio-0.23.8.tar.gz", hash = "sha256:759b10b33a6dc61cce40a8bd5205e302978bbbcc00e279a8b61d9a6a3c82e4d3"},
+]
+
+[[package]]
+name = "pytest-mock"
+version = "3.14.0"
+requires_python = ">=3.8"
+summary = "Thin-wrapper around the mock package for easier use with pytest"
+groups = ["dev"]
+dependencies = [
+    "pytest>=6.2.5",
+]
+files = [
+    {file = "pytest-mock-3.14.0.tar.gz", hash = "sha256:2719255a1efeceadbc056d6bf3df3d1c5015530fb40cf347c0f9afac88410bd0"},
+    {file = "pytest_mock-3.14.0-py3-none-any.whl", hash = "sha256:0b72c38033392a5f4621342fe11e9219ac11ec9d375f8e2a0c164539e0d70f6f"},
 ]
 
 [[package]]
