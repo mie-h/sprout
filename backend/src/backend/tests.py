@@ -42,8 +42,6 @@ def test_list_tasks_unauthorized_user():
     assert response.json() == {"detail": "User not logged in"}
 
 
-# Chat enpoint
-# Test for malformed request
 def test_chat_endpoint_malformed_request():
     response = client.post("/api/chat", json={"test": "test"})
     assert response.status_code == 400
