@@ -50,10 +50,34 @@ def test_chat_endpoint_malformed_request():
     assert "msg" in response.text
 
 
-# Test for empty `message` field
 def test_chat_endpoint_empty_message():
     response = client.post("/api/chat", json={"message": ""})
     assert response.status_code == 400
     assert "type" in response.text
     assert "loc" in response.text
     assert "msg" in response.text
+
+
+def test_chat_endpoint_success(mocker):
+    """
+    Testing features with external API calls can be done in several ways:
+    1. Setting up a test environment for the external API.
+    2. Mocking the external API call to return a known response.
+
+    Mocking is the simplest and most efficient method. It isolates the test
+    from the external API, making it faster and more reliable.
+
+    This test demonstrates how to mock the OpenAI API call within the chat
+    endpoint to return a known response.
+    """
+    openai_mock_response = mocker.MagicMock()
+    openai_mock_response.choices = [mocker.MagicMock()]
+    openai_mock_response.choices[0].message.content = "What's up?"
+
+    mocker.patch(
+        "openai.chat.completions.create",
+        return_value=openai_mock_response,
+    )
+    response = client.post("/api/chat", json={"message": "Hello, World!"})
+    assert response.status_code == 200
+    assert response.json() == {"response": "What's up?"}
