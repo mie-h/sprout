@@ -53,6 +53,7 @@ def test_chat_endpoint_malformed_request():
 def test_chat_endpoint_empty_message():
     response = client.post("/api/chat", json={"message": ""})
     assert response.status_code == 400
+    # TODO: Add more specific error message
     assert "type" in response.text
     assert "loc" in response.text
     assert "msg" in response.text
