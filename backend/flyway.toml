@@ -8,8 +8,8 @@ mixed = true
 outOfOrder = true
 validateMigrationNaming = true
 
-  [flyway.check]
-  majorTolerance = 0
+[flyway.check]
+majorTolerance = 0
 
 [flywayDesktop]
 developmentEnvironment = "development"
@@ -26,3 +26,8 @@ ignoreNewlinesInTextObjects = "off"
 url = "jdbc:postgresql://34.31.63.157:5432/guestbook"
 schemas = [ "public" ]
 displayName = "Google Cloud Database"
+
+[environments.local]
+url = "jdbc:postgresql://localhost:5432/postgres"
+schemas = [ "public" ]
+displayName = "Docker Postgres Database"

@@ -1,3 +1,7 @@
 [environments.gcp]
 user = "postgres"
 password = "${localSecret.Flyway Desktop be18d033-7b09-4b5c-bdbf-163b3d72234f}"
+
+[environments.local]
+user = "postgres"
+password = "postgres"
