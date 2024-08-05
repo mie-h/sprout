@@ -24,10 +24,13 @@ ignoreNewlinesInTextObjects = "off"
 
 [environments.gcp]
 url = "jdbc:postgresql://34.31.63.157:5432/guestbook"
-schemas = [ "public" ]
+schemas = [ "sprout" ]
 displayName = "Google Cloud Database"
 
 [environments.local]
 url = "jdbc:postgresql://localhost:5432/postgres"
-schemas = [ "public" ]
+schemas = [ "sprout" ]
 displayName = "Docker Postgres Database"
+user = "postgres"
+password = "postgres"
+flyway.cleanDisabled = false
