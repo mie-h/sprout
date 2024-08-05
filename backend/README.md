@@ -17,7 +17,7 @@ Please visit this page for more details:
 [https://docs.docker.com/compose/compose-application-model/](https://docs.docker.com/compose/compose-application-model/)
 
 ```
-$ docker compose up
+$ docker compose up --build
 ...
 api  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
