@@ -17,10 +17,12 @@ Please visit this page for more details:
 [https://docs.docker.com/compose/compose-application-model/](https://docs.docker.com/compose/compose-application-model/)
 
 ```
-$ docker compose up --build
+$ docker compose up
 ...
 api  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
+
+If docker configuration is updated, run with <code>--build</code> flag to rebuild the docker image
 
 ## Running tests locally
 
