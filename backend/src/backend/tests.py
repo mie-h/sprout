@@ -45,15 +45,26 @@ def test_list_tasks_unauthorized_user():
 def test_chat_endpoint_malformed_request():
     response = client.post("/api/chat", json={"test": "test"})
     assert response.status_code == 400
-    assert "type" in response.text
-    assert "loc" in response.text
-    assert "msg" in response.text
+    response_text = response.text
+
+    # Expected response text
+    expected_response = (
+        "1 validation error for ChatRequest\n"
+        "body -> message\n"
+        "  field required (type=value_error.missing)"
+    )
+    assert response_text == expected_response
 
 
-# Test for empty `message` field
 def test_chat_endpoint_empty_message():
     response = client.post("/api/chat", json={"message": ""})
     assert response.status_code == 400
-    assert "type" in response.text
-    assert "loc" in response.text
-    assert "msg" in response.text
+    response_text = response.text
+
+    # Expected response text
+    expected_response = (
+        "1 validation error for ChatRequest\n"
+        "body -> message\n"
+        "  ensure this value has at least 1 characters (type=value_error.any_str.min_length; limit_value=1)"
+    )
+    assert response_text == expected_response
