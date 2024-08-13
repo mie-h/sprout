@@ -139,8 +139,9 @@ openai.api_key = OPENAI_API_KEY
 
 
 # Pydantic models for request and response
+# adjust the max_length accordingly
 class ChatRequest(BaseModel):
-    message: str = Field(..., min_length=1)
+    message: str = Field(..., min_length=1, max_length=500)
 
 
 class ChatResponse(BaseModel):
