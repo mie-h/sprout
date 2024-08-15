@@ -53,7 +53,17 @@ def test_chat_endpoint_malformed_request():
 def test_chat_endpoint_empty_message():
     response = client.post("/api/chat", json={"message": ""})
     assert response.status_code == 400
-    # TODO: Add more specific error message
+    assert "String should have at least 1 character" in response.text
+    assert "type" in response.text
+    assert "loc" in response.text
+    assert "msg" in response.text
+
+
+def test_chat_endpoint_message_too_long():
+    long_message = "a" * 501  # Create a message with 501 characters
+    response = client.post("/api/chat", json={"message": long_message})
+    assert response.status_code == 400
+    assert "String should have at most 500 characters" in response.text
     assert "type" in response.text
     assert "loc" in response.text
     assert "msg" in response.text
