@@ -45,28 +45,52 @@ def test_list_tasks_unauthorized_user():
 def test_chat_endpoint_malformed_request():
     response = client.post("/api/chat", json={"test": "test"})
     assert response.status_code == 400
-    assert "type" in response.text
-    assert "loc" in response.text
-    assert "msg" in response.text
+    assert response.headers["Content-Type"] == "application/json"
+    assert response.json() == {
+        "detail": [
+            {
+                "input": {"test": "test"},
+                "loc": ["body", "message"],
+                "msg": "Field required",
+                "type": "missing",
+            }
+        ]
+    }
 
 
 def test_chat_endpoint_empty_message():
     response = client.post("/api/chat", json={"message": ""})
     assert response.status_code == 400
-    assert "String should have at least 1 character" in response.text
-    assert "type" in response.text
-    assert "loc" in response.text
-    assert "msg" in response.text
+    assert response.headers["Content-Type"] == "application/json"
+    assert response.json() == {
+        "detail": [
+            {
+                "ctx": {"min_length": 1},
+                "input": "",
+                "loc": ["body", "message"],
+                "msg": "String should have at least 1 character",
+                "type": "string_too_short",
+            }
+        ]
+    }
 
 
 def test_chat_endpoint_message_too_long():
     long_message = "a" * 501  # Create a message with 501 characters
     response = client.post("/api/chat", json={"message": long_message})
     assert response.status_code == 400
-    assert "String should have at most 500 characters" in response.text
-    assert "type" in response.text
-    assert "loc" in response.text
-    assert "msg" in response.text
+    assert response.headers["Content-Type"] == "application/json"
+    assert response.json() == {
+        "detail": [
+            {
+                "ctx": {"max_length": 500},
+                "input": long_message,
+                "loc": ["body", "message"],
+                "msg": "String should have at most 500 characters",
+                "type": "string_too_long",
+            }
+        ]
+    }
 
 
 def test_chat_endpoint_success(mocker):

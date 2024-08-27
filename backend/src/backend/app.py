@@ -4,16 +4,16 @@ from contextlib import asynccontextmanager
 from http import HTTPStatus
 from typing import Annotated, Optional
 
-from pydantic import BaseModel, Field
 import asyncpg
-from authlib.integrations.starlette_client import OAuth, OAuthError
-from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.exceptions import RequestValidationError
-from fastapi.responses import PlainTextResponse
-from loguru import logger
 import openai
-# from starlette.config import Config
+from loguru import logger
+from authlib.integrations.starlette_client import OAuth, OAuthError
+from pydantic import BaseModel, Field
+from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
@@ -58,10 +58,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # override the default status for malformed request payload 422 -> 400
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    return PlainTextResponse(str(exc), status_code=400)
+    return JSONResponse(
+        content=jsonable_encoder({"detail": exc.errors()}),
+        status_code=status.HTTP_400_BAD_REQUEST,
+    )
+
 
 oauth = OAuth()
 
@@ -135,7 +140,7 @@ async def get_tasks(user_id: Annotated[str, Depends(get_user_id)]):
 
 
 # Open AI chat
-openai.api_key = OPENAI_API_KEY 
+openai.api_key = OPENAI_API_KEY
 
 
 # Pydantic models for request and response
@@ -157,11 +162,9 @@ async def chat(chat_request: ChatRequest):
 
     response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[
-                {"role": "user", "content": prompt}
-            ],
+        messages=[{"role": "user", "content": prompt}],
         max_tokens=25,  # Limit the number of tokens in the response
-        stop=["\n"],     # Optionally, specify a stop sequence
+        stop=["\n"],  # Optionally, specify a stop sequence
     )
 
     chat_message = response.choices[0].message.content
