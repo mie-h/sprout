@@ -7,6 +7,7 @@ import { ChatBox } from "@/components/ChatBox";
 import WeeklyCalendar from "@/components/WeeklyCalendar";
 import { AiCompanion } from "@/components/AiCompanion";
 import { RiLogoutCircleRLine } from "react-icons/ri";
+import { fetchTasks, sendMessage, logOut } from "@/app/apicall";
 
 const initialMessages = [{ text: "Hi there! How are you?", isSender: true }];
 
@@ -20,18 +21,26 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("/api/tasks");
-      console.log(response);
-      if (response.status === 401) {
-        return router.push("/login");
+      try {
+        const tasks = await fetchTasks();
+        setTasks(tasks);
+      } catch (error: any) {
+        if (error.message === "Unauthorized") {
+          return router.push("/login");
+        }
+        console.error("Error fetching tasks:", error);
+        // Optionally update the UI to indicate an error
       }
-
-      setTasks(await response.json());
     })();
   }, []);
 
-  const handleLogOut = () => {
-    router.push("/api/logout");
+  const handleLogOut = async () => {
+    try {
+      await logOut();
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSendMessage = async (message: string) => {
@@ -42,33 +51,20 @@ export default function Home() {
     ]);
 
     try {
-      // Send the message to the backend API
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        console.error("Error sending message:", data.error);
-        return;
-      }
+      const responseMessage = await sendMessage(message); // Use sendMessage function
 
       // Add the response message to the state
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: data.response, isSender: true },
+        { text: responseMessage, isSender: true },
       ]);
     } catch (error) {
-      console.error("Error handling request:", error);
+      console.error(error);
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: "Failed to process message", isSender: true },
       ]);
+      // Optionally update the UI to indicate an error
     }
   };
 
