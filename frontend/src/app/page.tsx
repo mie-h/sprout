@@ -14,6 +14,7 @@ const initialMessages = [{ text: "Hi there! How are you?", isSender: true }];
 export default function Home() {
   const [messages, setMessages] = useState(initialMessages);
   const [tasks, setTasks] = useState([] as { id: number; title: string }[]);
+  const [messageError, setMessageError] = useState("");
   const path = usePathname();
   const router = useRouter();
   const lastMessage =
@@ -62,9 +63,9 @@ export default function Home() {
       console.error(error);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: "Failed to process message", isSender: true },
+        { text: "I failed to process your message.", isSender: true },
       ]);
-      // Optionally update the UI to indicate an error
+      setMessageError("Please try again.");
     }
   };
 
@@ -87,8 +88,11 @@ export default function Home() {
         <div className="flex-1 flex justify-center items-center">
           <WeeklyCalendar />
         </div>
-        <div className="flex-1 flex justify-center items-center">
+        <div className="flex-1 flex flex-col justify-center items-center">
           <ChatBox onSend={handleSendMessage} />
+          {messageError && (
+            <div className="text-black mt-2 text-sm">{messageError}</div>
+          )}
         </div>
       </div>
     </div>
