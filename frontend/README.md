@@ -1,5 +1,12 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+### Set Up Environment Variables
+
+Before starting the development server, make sure to set the `NEXT_PUBLIC_API_BASE_URL` environment variable in a `.env` file:
+
+```bash
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
+
 ## Getting Started
 
 First, run the development server:
