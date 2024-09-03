@@ -4,7 +4,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 Before starting the development server, make sure to set the `NEXT_PUBLIC_API_BASE_URL` environment variable in a `.env` file:
 
-````bash
+```bash
 NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 
 ## Getting Started
@@ -19,7 +19,7 @@ yarn dev
 pnpm dev
 # or
 bun dev
-````
+```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
