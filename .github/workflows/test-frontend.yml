@@ -12,6 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: List frontend directory files
+        run: ls -la frontend
+
       - name: Cache node modules
         uses: actions/cache@v3
         with:
