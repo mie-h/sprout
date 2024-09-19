@@ -3,6 +3,8 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["jest", "node"], // Add Jest types here
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -19,11 +21,18 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["src/*"],
       "@images/*": ["./public/images/*"],
       "@icons/*": ["./public/icons/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/**/*.ts",
+    "tests/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }
